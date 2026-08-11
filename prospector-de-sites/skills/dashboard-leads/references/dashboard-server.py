@@ -65,7 +65,10 @@ class App(SimpleHTTPRequestHandler):
             hg = dict(cfg.get('hostgator', {}))
             hg['senhaDefinida'] = bool(hg.get('senha'))
             hg.pop('senha', None)  # a senha NUNCA sai do arquivo
-            return self._json(200, {'contratante': cfg.get('contratante', {}), 'hostgator': hg})
+            rw = dict(cfg.get('railway', {}))
+            rw['tokenDefinido'] = bool(rw.get('githubToken'))
+            rw.pop('githubToken', None)  # o token NUNCA sai do arquivo
+            return self._json(200, {'contratante': cfg.get('contratante', {}), 'hostgator': hg, 'railway': rw})
         if self.path.split('?')[0] == '/api/leads':
             c = conexao(); c.row_factory = sqlite3.Row
             rows = [dict(r) for r in c.execute('SELECT * FROM leads').fetchall()]; c.close()
@@ -83,7 +86,7 @@ class App(SimpleHTTPRequestHandler):
     def do_PUT(self):
         if self.path.split('?')[0] == '/api/config':
             cfg = ler_config(); corpo = self._corpo()
-            if 'contratante' in corpo or 'hostgator' in corpo:
+            if 'contratante' in corpo or 'hostgator' in corpo or 'railway' in corpo:
                 if 'contratante' in corpo:
                     ct = cfg.get('contratante', {})
                     ct.update({k: v for k, v in corpo['contratante'].items() if isinstance(v, str)})
@@ -95,6 +98,13 @@ class App(SimpleHTTPRequestHandler):
                         if k == 'senha' and v == '': continue  # em branco = mantém a atual
                         hg[k] = v
                     cfg['hostgator'] = hg
+                if 'railway' in corpo:
+                    rw = cfg.get('railway', {})
+                    for k, v in corpo['railway'].items():
+                        if not isinstance(v, str): continue
+                        if k == 'githubToken' and v == '': continue  # em branco = mantém o atual
+                        rw[k] = v
+                    cfg['railway'] = rw
             else:  # compatibilidade: corpo plano = contratante
                 ct = cfg.get('contratante', {})
                 ct.update({k: v for k, v in corpo.items() if isinstance(v, str)})
