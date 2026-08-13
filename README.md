@@ -1,4 +1,4 @@
-# 🎯 Prospector de Sites — v2.1.0
+# 🎯 Prospector de Sites — v2.1.1
 
 **Plugin para Claude (Cowork) que roda o ciclo completo de prospecção e venda de sites — com CRM local incluso:**
 
@@ -40,7 +40,7 @@ Re-adicionar o link NÃO atualiza (fica em cache). Faça:
 ```
 /plugin marketplace update arrecheneto-plugins
 ```
-e reinicie o app — a versão certa é a **2.1.0** (confira em Gerenciar plugins). Se não subir: desinstale o plugin → remova o marketplace → feche o app → adicione e instale de novo. A partir da 2.1.0 a atualização é automática (autoUpdate ativado).
+e reinicie o app — a versão certa é a **2.1.1** (confira em Gerenciar plugins). Se não subir: desinstale o plugin → remova o marketplace → feche o app → adicione e instale de novo. A partir da 2.1.1 a atualização é automática (autoUpdate ativado).
 
 ## Requisitos
 
