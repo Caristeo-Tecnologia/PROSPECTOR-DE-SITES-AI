@@ -39,10 +39,10 @@ Pergunte qual hospedagem o usuário já tem: **HostGator** (cPanel/FTP) ou **Rai
 ### Railway
 
 - **Se ainda não tem projeto**: explique que ele precisa de um repositório Git (GitHub) conectado a um serviço Railway, com o serviço servindo arquivos estáticos a partir de `public/` (a skill `deploy-railway` tem um servidor mínimo pronto em `references/servidor-estatico/` pra copiar se o projeto ainda não tiver isso).
-- **Se já tem**: NÃO colete nada pelo chat (nem a URL do repo — e JAMAIS o token). Tudo na aba Configurações do dashboard:
+- **Se já tem**: pergunte se o git desse repo já está logado (SSH ou GitHub CLI) na máquina dele — normalmente já está, se ele clona/faz push por lá manualmente. Tudo na aba Configurações do dashboard:
   1. Instrua: abra o dashboard → aba **Configurações** → seção **Conexão Railway**.
-  2. Ele preenche: pasta local do repo (clonado dentro da pasta conectada), URL do repo, branch (padrão `main`), domínio público do Railway, pasta base (padrão `clientes`) e um GitHub Personal Access Token com permissão de push nesse repo. Clica em "Salvar conexão" → vai direto pro `prospector-config.json`, sem passar pelo chat.
-  3. Peça para avisar quando salvar — aí você LÊ o config (sem nunca exibir o token) e roda o teste de conexão.
+  2. Campos obrigatórios: pasta local do repo (clonado dentro da pasta conectada, com `origin` já configurado), branch (padrão `main`), domínio público do Railway, pasta base (padrão `clientes`) — nenhum segredo aqui, é só caminho e texto. URL do repo e GitHub Personal Access Token são **opcionais**: só preencher se ele quiser que o `/publicar` rode pelo servidor sem precisar dar o duplo clique no publicador local. Clica em "Salvar conexão" → vai direto pro `prospector-config.json`, sem passar pelo chat.
+  3. Peça para avisar quando salvar — aí você LÊ o config (sem nunca exibir o token, se houver) e roda o teste de conexão.
 
   Nunca exiba, imprima ou registre o token em nenhuma saída. Editar o `prospector-config.json` na mão também vale.
 

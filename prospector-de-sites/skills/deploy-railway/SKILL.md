@@ -9,21 +9,25 @@ Publicar páginas em `[repoPath]/public/[pastaBase]/[slug]/` dentro do repositó
 
 ## Credenciais
 
-Tudo vem de `prospector-config.json` (bloco `railway`): `repoPath` (pasta local do repo, dentro da pasta conectada), `repoUrl` (ex.: `https://github.com/usuario/meu-site.git`), `branch` (padrão `main`), `dominio` (domínio público do Railway, ex.: `meusite.up.railway.app`), `pastaBase` (padrão `clientes`), `githubToken` (Personal Access Token do GitHub com permissão de push no repo). **O token vive SÓ nesse arquivo, no computador do usuário — nunca é digitado no chat, nunca é exibido em nenhuma saída, log ou comando mostrado ao usuário.** Se faltar, oriente o usuário: dashboard → aba Configurações → Conexão Railway → colar o token e salvar (ou editar o arquivo na mão). Nunca pelo chat.
+Tudo vem de `prospector-config.json` (bloco `railway`): `repoPath` (pasta local do repo, dentro da pasta conectada, JÁ clonado e com `origin` configurado — é o repo onde o usuário já tem login do git funcionando), `branch` (padrão `main`), `dominio` (domínio público do Railway, ex.: `meusite.up.railway.app`), `pastaBase` (padrão `clientes`).
 
-## Método 1 — Push direto do sandbox (tentar primeiro, silencioso)
+`repoUrl` e `githubToken` são **OPCIONAIS** — só preencha se o usuário quiser que o `/publicar` rode 100% pelo sandbox, sem nunca tocar no computador. Sem eles, a publicação usa o Método 2 (git já autenticado na máquina do usuário — SSH ou GitHub CLI já logados), que é mais simples e não pede nada. **Se o token existir, ele vive SÓ nesse arquivo, no computador do usuário — nunca é digitado no chat, nunca é exibido em nenhuma saída, log ou comando mostrado ao usuário.**
 
-Diferente de FTP/cPanel, git sobre HTTPS geralmente NÃO é bloqueado pela rede do sandbox. Por isso, tente publicar você mesmo antes de acionar o usuário:
+## Método 1 — Push direto do sandbox (só se houver `githubToken` no config)
+
+Diferente de FTP/cPanel, git sobre HTTPS geralmente NÃO é bloqueado pela rede do sandbox — mas o sandbox não tem acesso ao git/SSH já logado na máquina do usuário, então só tente isso se `githubToken` e `repoUrl` estiverem preenchidos:
 
 1. Copie/gere os arquivos do cliente em `[repoPath]/public/[pastaBase]/[slug]/index.html` (página) e `.../proposta.html` (capa).
 2. Dentro de `[repoPath]`: `git add -A && git commit -m "publica: [slug]"`.
 3. `git push https://x-access-token:[token do config]@[host+caminho do repoUrl] HEAD:[branch]` — token lido do arquivo, jamais mostrado ou digitado no chat.
-4. Se o push funcionar, ótimo: zero ação do usuário. O Railway detecta o push e builda/publica sozinho (~1-2 min). Se a rede do sandbox bloquear (timeout/refused), faltar `repoPath` local ou o repo não existir na pasta conectada, caia SEM DRAMA para o Método 2 — não insista em tentativas repetidas.
+4. Se o push funcionar, ótimo: zero ação do usuário. O Railway detecta o push e builda/publica sozinho (~1-2 min). Se a rede do sandbox bloquear (timeout/refused) ou faltar `repoPath` local, caia SEM DRAMA para o Método 2 — não insista em tentativas repetidas.
 
-## Método 2 — Publicador local (fallback)
+Sem `githubToken` configurado, pule direto para o Método 2 — não há como o sandbox autenticar.
+
+## Método 2 — Publicador local (padrão recomendado — usa o git já logado na máquina)
 
 1. **Garanta os arquivos do publicador na pasta conectada** (copie de `references/` desta skill, sobrescrevendo versões antigas), conforme o sistema do usuário — pergunte ou detecte: `publicar-agora.command` (Mac) ou `publicar-agora.bat` (Windows). Em dúvida, copie os dois — cada sistema ignora o do outro.
-2. Peça UM duplo clique. O script lê `repoPath`, `repoUrl`, `branch` e `githubToken` de `prospector-config.json`, entra no repo, faz `git add -A && git commit && git push` e avisa quando terminar. Nada fica agendado — é rodar de novo a cada `/publicar` que passar por aqui. (Se o macOS bloquear por segurança: botão direito → Abrir na primeira vez.)
+2. Peça UM duplo clique. O script lê `repoPath` e `branch` de `prospector-config.json`, entra no repo e faz `git add -A && git commit && git push origin HEAD:[branch]` — usando a autenticação git que já está configurada naquele repo na máquina do usuário (SSH key ou GitHub CLI já logados), sem pedir nem armazenar nenhuma senha ou token. Se der erro de autenticação, é o git da máquina que precisa de login (`gh auth login` ou uma chave SSH cadastrada no GitHub) — isso o usuário resolve fora do Claude. (Se o macOS bloquear por segurança: botão direito → Abrir na primeira vez.)
 3. Aguarde ~1-2 min (tempo de build do Railway) e verifique.
 
 ## Método 3 — Navegador/CLI Railway (último recurso)
