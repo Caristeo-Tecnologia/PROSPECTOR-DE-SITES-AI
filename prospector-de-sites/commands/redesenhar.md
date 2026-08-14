@@ -13,7 +13,9 @@ Redesenhe as páginas dos leads seguindo a skill `redesign-premium`. Ela é obri
 
 ## Para cada cliente do lote
 
-1. **Extração**: abra o site original no Claude in Chrome (o sandbox costuma bloquear fetch direto a esses domínios). Extraia TODO o conteúdo real: textos, serviços, formação/credenciais, endereço, telefone/WhatsApp, e-mail, redes sociais, horários, paleta de cores e — OBRIGATÓRIO — as URLs reais do logo e das fotos (via JavaScript no navegador: colete `img.currentSrc` de todas as imagens; se forem lazy-load, role a página até o fim antes de coletar). Tire um screenshot do site original para referência.
+1. **Extração**: depende de o lead ter site (`Site atual` em `leads.md`).
+   - **Tem site**: abra-o no Claude in Chrome (o sandbox costuma bloquear fetch direto a esses domínios). Extraia TODO o conteúdo real: textos, serviços, formação/credenciais, endereço, telefone/WhatsApp, e-mail, redes sociais, horários, paleta de cores e — OBRIGATÓRIO — as URLs reais do logo e das fotos (via JavaScript no navegador: colete `img.currentSrc` de todas as imagens; se forem lazy-load, role a página até o fim antes de coletar). Tire um screenshot do site original para referência.
+   - **Sem site** (`Site atual: sem site`): abra o perfil do lead no Google Maps/Google Business no Claude in Chrome. Extraia categoria, descrição, horário, endereço, telefone/WhatsApp, avaliações em destaque e as URLs reais das fotos da galeria (mesma técnica de `img.currentSrc`, rolando a galeria inteira). Não há logo pra extrair — siga a seção "Cliente sem site" da skill `redesign-premium`.
 2. **Redesign**: aplique a skill `redesign-premium` na íntegra. Regra de ouro: NADA inventado — é uma nova versão da página do cliente, não uma página nova. O logo original e as fotos originais DEVEM aparecer na página nova (se o cliente não tem site/logo, use composição tipográfica — nunca invente logo).
 3. **Salvar** na pasta conectada, com o nome do cliente no arquivo para fácil identificação:
    - `sites/[slug]/[slug].html` — a página final (arquivo único, autocontido, responsivo)

@@ -16,18 +16,18 @@ def ler_config():
     except Exception: return {}
 PORTA = 8765
 CAMPOS = ['slug','nome','nicho','cidade','nota','avaliacoes','email','telefone','whatsapp',
-          'siteAntigo','motivo','status','urlNova','dataProposta','valor','obs',
+          'canalContato','siteAntigo','motivo','status','urlNova','dataProposta','valor','obs',
           'contratoStatus','contratoEm','manutencao','pago','docCliente','endCliente']
 
 def conexao():
     c = sqlite3.connect(DB)
     c.execute('''CREATE TABLE IF NOT EXISTS leads(
         slug TEXT PRIMARY KEY, nome TEXT, nicho TEXT, cidade TEXT, nota REAL, avaliacoes INTEGER,
-        email TEXT, telefone TEXT, whatsapp TEXT, siteAntigo TEXT, motivo TEXT,
+        email TEXT, telefone TEXT, whatsapp TEXT, canalContato TEXT DEFAULT 'email', siteAntigo TEXT, motivo TEXT,
         status TEXT DEFAULT 'novo', urlNova TEXT, dataProposta TEXT, valor REAL, obs TEXT,
         contratoStatus TEXT DEFAULT 'pendente', contratoEm TEXT, manutencao REAL, pago INTEGER DEFAULT 0,
         atualizado TEXT DEFAULT (datetime('now','localtime')))''')
-    for col, tipo in [('contratoStatus',"TEXT DEFAULT 'pendente'"),('contratoEm','TEXT'),('manutencao','REAL'),('pago','INTEGER DEFAULT 0'),('docCliente','TEXT'),('endCliente','TEXT')]:
+    for col, tipo in [('contratoStatus',"TEXT DEFAULT 'pendente'"),('contratoEm','TEXT'),('manutencao','REAL'),('pago','INTEGER DEFAULT 0'),('docCliente','TEXT'),('endCliente','TEXT'),('canalContato',"TEXT DEFAULT 'email'")]:
         try: c.execute('ALTER TABLE leads ADD COLUMN %s %s' % (col, tipo))
         except sqlite3.OperationalError: pass
     return c

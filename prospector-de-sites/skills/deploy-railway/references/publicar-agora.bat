@@ -20,6 +20,11 @@ if not exist "%REPO%" (
   pause
   exit /b 1
 )
+if not exist "%REPO%\.git" (
+  echo ERRO: %REPO% nao e um repositorio git ^(sem pasta .git^). Confira o repoPath no dashboard — este script NUNCA cria um repo novo.
+  pause
+  exit /b 1
+)
 
 cd /d "%REPO%"
 git add -A

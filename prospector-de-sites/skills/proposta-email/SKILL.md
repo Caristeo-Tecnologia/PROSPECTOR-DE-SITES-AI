@@ -1,11 +1,22 @@
 ---
 name: proposta-email
-description: Esta skill deve ser usada ao escrever e enviar a proposta comercial por e-mail para um lead prospectado — e-mail de apresentação da nova versão do site, com rapport e sem preço. Acione quando o usuário disser "enviar proposta", "e-mail para o cliente", "mandar o site para o cliente" ou rodar /proposta ou /followup.
+description: Esta skill deve ser usada ao escrever e enviar a proposta comercial para um lead prospectado — por e-mail (padrão) ou WhatsApp (quando o lead não tem e-mail) — apresentação da nova versão do site (ou do primeiro site, se o lead não tinha nenhum), com rapport e sem preço. Acione quando o usuário disser "enviar proposta", "e-mail para o cliente", "mandar o site para o cliente" ou rodar /proposta ou /followup.
 ---
 
-# Proposta por e-mail
+# Proposta por e-mail (ou WhatsApp, sem e-mail)
 
-O e-mail NÃO vende — ele desperta curiosidade e prova trabalho feito. O fechamento (preço, escopo, reunião) acontece na resposta. Um e-mail que parece de vendedor morre no spam; um e-mail que parece de uma pessoa que já trabalhou de graça pro destinatário é aberto e respondido.
+O e-mail NÃO vende — ele desperta curiosidade e prova trabalho feito. O fechamento (preço, escopo, reunião) acontece na resposta. Um e-mail que parece de vendedor morre no spam; um e-mail que parece de uma pessoa que já trabalhou de graça pro destinatário é aberto e respondido. Os mesmos princípios valem pra versão WhatsApp (canal de fallback quando o lead não tem e-mail) — só a forma muda, ver "Canal" abaixo.
+
+## Canal: e-mail ou WhatsApp
+
+Decidido na prospecção (`canalContato` em `leads.md`): `email` é o canal padrão; `whatsapp` é o fallback quando o lead não tinha e-mail público.
+
+- **`email`**: siga a skill inteira como está — assunto, corpo HTML, `create_draft` do Gmail.
+- **`whatsapp`**: mesmos princípios (rapport, 1 defeito objetivo sem ofensa, 1 link só, zero preço, zero pressão), mas formato de mensagem curta — 4 a 6 linhas corridas, sem "assunto", tom de mensagem pessoal mesmo (não corta em parágrafos formais). Estrutura: elogio específico → 1 linha sobre o site atual (ou sobre não ter site, ver "Sem site" abaixo) → "preparei uma versão nova, já no ar" + o link da capa → pergunta simples ("dá uma olhada e me conta o que achou?"). **Nunca envie automaticamente**: monte o link `https://wa.me/55DDDNUMERO?text=[mensagem com encodeURIComponent]` e abra-o via Claude in Chrome (ou apresente o link pronto) — a mensagem fica digitada na caixa de texto do WhatsApp Web, esperando o usuário clicar em enviar. Mesmo princípio do rascunho de e-mail: pronta pra revisão, envio é manual.
+
+### Sem site (lead veio de `incluirSemSite`)
+
+O defeito do parágrafo 2 não existe (não há site pra criticar) — troque por uma observação de oportunidade: "vi que a [negócio] ainda não tem um site, e hoje boa parte de quem pesquisa antes de decidir acaba indo pro concorrente que aparece no Google". Mesmo tom, mesma ausência de pressão — é constatação, não cobrança.
 
 ## Princípios
 
@@ -42,9 +53,10 @@ Revise o e-mail pronto contra CADA item; se falhar em qualquer um, reescreva ant
 
 ## Envio
 
-- Modo **rascunho** (padrão): criar via conector do Gmail (`create_draft`) com destinatário, assunto e corpo prontos. Avisar o usuário para revisar antes de enviar.
-- Modo **enviar direto**: se o conector não suportar envio, abrir o Gmail web via Claude in Chrome, ou criar o rascunho e avisar.
-- Nunca enviar para lead sem e-mail confirmado; nesses casos, sugerir contato via WhatsApp com a mesma mensagem adaptada.
+- Canal `email`, modo **rascunho** (padrão): criar via conector do Gmail (`create_draft`) com destinatário, assunto e corpo prontos. Avisar o usuário para revisar antes de enviar.
+- Canal `email`, modo **enviar direto**: se o conector não suportar envio, abrir o Gmail web via Claude in Chrome, ou criar o rascunho e avisar.
+- Canal `whatsapp`: sempre modo rascunho/preparado (independente do `envio.modo` do config) — ver seção "Canal" acima. Enviar WhatsApp automaticamente não é uma opção desta skill.
+- Nunca criar proposta (nenhum canal) para lead sem e-mail E sem WhatsApp confirmados — esse lead nem deveria ter passado da prospecção.
 
 ## Página-capa (o que o cliente vê ao clicar)
 
@@ -52,4 +64,4 @@ O link do e-mail leva à página-capa gerada no `/publicar` (template em `refere
 
 ## Depois do envio
 
-Registrar no banco/`leads.md` (status + data) e no dashboard. As respostas são verificadas pelo comando `/respostas` (Gmail via conector) — sugira ao usuário agendar a verificação diária. Follow-up pelo `/followup` após 3+ dias úteis sem resposta (1 único follow-up por lead: curto, gentil, "conseguiu ver a página?").
+Registrar no banco/`leads.md` (status + data) e no dashboard. As respostas de canal `email` são verificadas pelo comando `/respostas` (Gmail via conector) — sugira ao usuário agendar a verificação diária. Canal `whatsapp` não tem verificação automática (a skill não lê o WhatsApp do usuário) — quem acompanha a resposta é o próprio usuário, direto no WhatsApp; ele marca manualmente no dashboard quando o lead responder. Follow-up pelo `/followup` após 3+ dias úteis sem resposta, só pra canal `email` (1 único follow-up por lead: curto, gentil, "conseguiu ver a página?").

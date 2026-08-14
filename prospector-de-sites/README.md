@@ -1,4 +1,4 @@
-# Prospector de Sites — v2.1.1
+# Prospector de Sites — v2.2.2
 
 Prospecção semi-automática de clientes com sites ruins: acha, redesenha, publica e oferta.
 
@@ -35,4 +35,4 @@ Tudo na pasta conectada: `prospector-config.json` (preferências e credenciais �
 
 ## Como atualizar
 
-No chat: `/plugin marketplace update arrecheneto-plugins` e reinicie o app (versão certa: 2.1.1). Da 2.1.1 em diante, atualiza sozinho.
+No chat: `/plugin marketplace update arrecheneto-plugins` e reinicie o app (versão certa: 2.2.2). Da 2.2.2 em diante, atualiza sozinho.

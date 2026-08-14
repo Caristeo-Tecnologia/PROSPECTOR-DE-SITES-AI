@@ -7,10 +7,14 @@ description: Esta skill deve ser usada ao redesenhar o site de um cliente prospe
 
 Criar uma NOVA VERSÃO da página do cliente — não uma página nova. O cliente precisa reconhecer o próprio negócio, só que elevado ao padrão que o faturamento dele merece.
 
+## Cliente sem site (prospectado com `incluirSemSite`)
+
+Quando o lead não tinha site (veio de `/prospectar` com essa opção ligada, `Site atual: sem site` em `leads.md`), não existe "site original" pra melhorar — o site novo é o PRIMEIRO site do cliente. Isso muda a fonte de conteúdo, não as regras: tudo abaixo (nada inventado, fotos reais, identidade preservada) vale igual, só que a fonte vira o **perfil do Google Maps/Google Business** em vez de um HTML antigo — categoria, descrição do perfil, fotos da galeria do Google, avaliações reais, horário de funcionamento, endereço, telefone/WhatsApp. Logo quase certamente não existe: use composição tipográfica (nome do negócio bem tratado tipograficamente + ícone simples do nicho) — nunca invente um logo gráfico. O pitch da página também muda de tom: não é "veja a versão nova do seu site", é "aqui está o site que faltava pra vocês".
+
 ## Regras invioláveis
 
-1. **Nenhum FATO inventado — mas o texto deve ser APRIMORADO.** Todo serviço, credencial, número, endereço e contato vem do site original (ou do perfil do Google). Sem dados fictícios, sem depoimentos criados, sem serviços que o cliente não oferece. Porém o TEXTO não é copiado cru: reescreva com copy melhor — títulos mais fortes, frases mais claras, hierarquia de leitura — sempre dizendo a mesma verdade que o original diz.
-2. **Fotos e logo originais são OBRIGATÓRIOS no site novo.** Toda foto utilizável do site existente (profissional, consultório, logo) deve constar na página nova, pelas URLs originais (colete via `img.currentSrc` no navegador, rolando a página inteira para vencer lazy-load). O cliente precisa se reconhecer na hora.
+1. **Nenhum FATO inventado — mas o texto deve ser APRIMORADO.** Todo serviço, credencial, número, endereço e contato vem do site original (ou do perfil do Google, se o cliente não tiver site). Sem dados fictícios, sem depoimentos criados, sem serviços que o cliente não oferece. Porém o TEXTO não é copiado cru: reescreva com copy melhor — títulos mais fortes, frases mais claras, hierarquia de leitura — sempre dizendo a mesma verdade que o original (ou o perfil do Google) diz.
+2. **Fotos e logo originais são OBRIGATÓRIOS no site novo, quando existirem.** Toda foto utilizável do site existente ou do perfil do Google (profissional, consultório, logo) deve constar na página nova, pelas URLs originais (colete via `img.currentSrc` no navegador, rolando a página/galeria inteira para vencer lazy-load). O cliente precisa se reconhecer na hora. Sem site e sem fotos suficientes no perfil do Google: use as poucas que houver — nunca substitua por banco de imagens genérico fingindo ser do cliente.
 3. **Identidade preservada.** Manter logo, paleta de cores e fotos do cliente. Se a paleta original for fraca (ex.: cores puras saturadas), refinar os tons — nunca trocar a família de cores.
 4. **Mais completo que o original.** O site novo deve ser MUITO mais profissional e bem estruturado. Se o original tem poucas seções, CRIE as seções relevantes que faltam — desde que preenchidas só com informação real: prova social (nota + avaliações reais do Google), "como funciona o atendimento" (se dedutível do original), localização com mapa, horários (do perfil do Maps), FAQ com dúvidas respondíveis pelo conteúdo real. Seção que exigiria inventar fato = não criar.
 5. **Arquivo único.** `sites/[slug]/[slug].html` autocontido: CSS inline no `<head>`, sem build, sem dependências além de Google Fonts.
@@ -60,8 +64,8 @@ A página pronta deve parecer feita por um estúdio de design — teste honesto:
 - [ ] Número do WhatsApp no formato wa.me correto (55 + DDD + número)
 - [ ] Responsivo verificado em 360, 375, 768, 1024, 1280 e 1440px — zero rolagem horizontal e zero quebra em TODAS
 - [ ] Título e meta description preenchidos com nome + especialidade + cidade
-- [ ] Comparação com o original: todo conteúdo importante do site antigo está presente
-- [ ] Logo e fotos ORIGINAIS do cliente presentes na página nova
+- [ ] Comparação com o original: todo conteúdo importante do site antigo está presente (ou, sem site original, todo conteúdo relevante do perfil do Google está presente)
+- [ ] Logo (ou composição tipográfica, se não houver logo) e fotos ORIGINAIS do cliente presentes na página nova
 - [ ] `[slug]-editor.html` gerado e `comparar.html` atualizado
 
 ## Editor visual e comparador

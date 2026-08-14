@@ -9,7 +9,8 @@ Prospecte leads qualificados seguindo a skill `prospeccao-maps`.
 
 1. Leia `prospector-config.json` na pasta conectada. Se não existir, oriente a rodar `/setup` primeiro.
 2. Determine nicho e cidade: use os argumentos `$ARGUMENTS` se informados; senão, pergunte ao usuário qual dos nichos padrão do config usar (e confirme a cidade). O usuário SEMPRE pode trocar nicho e cidade na hora — nunca trave nos padrões.
-3. Leia `leads.md` na pasta conectada (se existir) para saber quais profissionais já foram avaliados — estes devem ser EXCLUÍDOS da nova busca.
+3. Leia `prospeccao.incluirSemSite` do config (padrão `false`) — define se negócios sem nenhum site também qualificam (não só os com site ruim).
+4. Leia `leads.md` na pasta conectada (se existir) para saber quais profissionais já foram avaliados — estes devem ser EXCLUÍDOS da nova busca.
 
 ## Execução
 
@@ -17,9 +18,9 @@ Use as ferramentas do Claude in Chrome (carregue via ToolSearch se necessário) 
 
 - Buscar "[nicho] em [cidade]"
 - Avaliar até 25 estabelecimentos ou até atingir o número de leads qualificados do config (padrão 10), o que vier primeiro
-- Critério ouro: nota alta (≥ 4.7) + muitas avaliações (≥ 40) + site ATIVO porém ruim + e-mail público. Os três eliminatórios: sem site (ou site fora do ar/diretório de terceiros) → pula; site bom → pula; sem e-mail → pula. Sempre registrar descartados com o motivo e seguir buscando até bater a meta
-- Para cada candidato, abrir o site em nova aba e avaliar a qualidade seguindo os critérios da skill
-- Coletar: nome, nota, nº de avaliações, telefone, **WhatsApp em formato 55DDDnúmero** (link wa.me no site ou celular do perfil do Maps — ver skill), e-mail, URL do site e o motivo objetivo pelo qual o site é ruim
+- Critério ouro: nota alta (≥ 4.7) + muitas avaliações (≥ 40) + (site ATIVO porém ruim OU, se `incluirSemSite` estiver ligado, nenhum site) + e-mail público OU WhatsApp coletável. Eliminatórios: sem site e `incluirSemSite` desligado → pula; site bom → pula; nem e-mail nem WhatsApp → pula. Sempre registrar descartados com o motivo e seguir buscando até bater a meta
+- Para cada candidato com site, abrir o site em nova aba e avaliar a qualidade seguindo os critérios da skill; candidato sem site (quando aceito) já qualifica nesse quesito, sem essa etapa
+- Coletar: nome, nota, nº de avaliações, telefone, **WhatsApp em formato 55DDDnúmero** (link wa.me no site ou celular do perfil do Maps — ver skill), e-mail (se houver), URL do site (ou "sem site") e o motivo objetivo (site ruim ou "sem site próprio")
 
 ## Saída — Google Sheets + dashboard + cópia local
 

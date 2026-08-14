@@ -23,7 +23,7 @@ Arquitetura na RAIZ da pasta conectada:
 ```sql
 CREATE TABLE IF NOT EXISTS leads(
   slug TEXT PRIMARY KEY, nome TEXT, nicho TEXT, cidade TEXT, nota REAL, avaliacoes INTEGER,
-  email TEXT, telefone TEXT, whatsapp TEXT, siteAntigo TEXT, motivo TEXT,
+  email TEXT, telefone TEXT, whatsapp TEXT, canalContato TEXT DEFAULT 'email', siteAntigo TEXT, motivo TEXT,
   status TEXT DEFAULT 'novo', urlNova TEXT, dataProposta TEXT, valor REAL, obs TEXT,
   contratoStatus TEXT DEFAULT 'pendente', contratoEm TEXT, manutencao REAL, pago INTEGER DEFAULT 0,
   docCliente TEXT, endCliente TEXT,
@@ -43,7 +43,7 @@ c.execute("INSERT INTO leads (slug,nome,status,...) VALUES (?,?,?,...) ON CONFLI
 c.commit()
 EOF
 ```
-   - `/prospectar` → insere leads (`novo`) e descartados (`descartado`, motivo em `obs`). NUNCA sobrescreva um lead cujo status já avançou.
+   - `/prospectar` → insere leads (`novo`) e descartados (`descartado`, motivo em `obs`), com `canalContato='email'` (padrão) ou `'whatsapp'` (lead sem e-mail, WhatsApp como fallback). NUNCA sobrescreva um lead cujo status já avançou.
    - `/redesenhar` → `status='redesenhado'` · `/publicar` → `status='publicado'`, `urlNova` · `/proposta` → `status='proposta'`, `dataProposta`.
    - Usuário conta que respondeu/fechou → `status='respondeu'|'fechado'`, `valor` (+ `manutencao` se houver mensalidade).
    - `/contrato` → `contratoStatus='enviado'` + `contratoEm`. Cliente assinou → `contratoStatus='assinado'`. Pagamento recebido → `pago=1`.

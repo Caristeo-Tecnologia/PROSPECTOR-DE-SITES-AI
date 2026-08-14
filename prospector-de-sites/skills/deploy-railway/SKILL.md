@@ -13,6 +13,12 @@ Tudo vem de `prospector-config.json` (bloco `railway`): `repoPath` (pasta local 
 
 `repoUrl` e `githubToken` são **OPCIONAIS** — só preencha se o usuário quiser que o `/publicar` rode 100% pelo sandbox, sem nunca tocar no computador. Sem eles, a publicação usa o Método 2 (git já autenticado na máquina do usuário — SSH ou GitHub CLI já logados), que é mais simples e não pede nada. **Se o token existir, ele vive SÓ nesse arquivo, no computador do usuário — nunca é digitado no chat, nunca é exibido em nenhuma saída, log ou comando mostrado ao usuário.**
 
+**NUNCA rode `git init`, `git clone` ou crie um repositório novo.** O repo em `repoPath` já existe, já foi clonado pelo usuário e já tem `origin` configurado — é o mesmo repo que o Railway está observando. Antes de qualquer comando git, confira se `[repoPath]/.git` existe: se não existir (ou `repoPath` estiver vazio/apontando pra pasta errada), PARE — não tente "resolver" criando um repo do zero ali, isso quebra a conexão com o Railway. Peça ao usuário o caminho correto do repo já configurado (dashboard → Configurações → Conexão Railway → `repoPath`).
+
+## Antes de tudo: confirme que o repo existe
+
+Verifique `[repoPath]/.git` (ex.: `test -d "$repoPath/.git"` ou equivalente) antes de qualquer `git add`/`commit`/`push`, tanto no Método 1 quanto no Método 2. Se não existir, é sinal de config errado, não de repo faltando — pare e peça o caminho certo, nunca inicialize um repo novo no lugar.
+
 ## Método 1 — Push direto do sandbox (só se houver `githubToken` no config)
 
 Diferente de FTP/cPanel, git sobre HTTPS geralmente NÃO é bloqueado pela rede do sandbox — mas o sandbox não tem acesso ao git/SSH já logado na máquina do usuário, então só tente isso se `githubToken` e `repoUrl` estiverem preenchidos:
