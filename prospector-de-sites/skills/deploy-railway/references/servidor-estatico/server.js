@@ -13,7 +13,8 @@ const TIPOS = {
 };
 
 http.createServer((req, res) => {
-  let rel = decodeURIComponent(req.url.split('?')[0]);
+  const urlPath = req.url.split('?')[0];
+  let rel = decodeURIComponent(urlPath);
   if (rel.endsWith('/')) rel += 'index.html';
   const alvo = path.normalize(path.join(PASTA, rel));
   if (!alvo.startsWith(PASTA)) {
@@ -22,6 +23,12 @@ http.createServer((req, res) => {
   }
   fs.readFile(alvo, (erro, dados) => {
     if (erro) {
+      // raiz ("/") sem public/index.html ainda: responde 200 em vez de 404,
+      // pra não quebrar o healthcheck do Railway antes do primeiro site existir.
+      if (urlPath === '/') {
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('Prospector de Sites — servidor ativo.');
+      }
       res.writeHead(404);
       return res.end('Nao encontrado');
     }

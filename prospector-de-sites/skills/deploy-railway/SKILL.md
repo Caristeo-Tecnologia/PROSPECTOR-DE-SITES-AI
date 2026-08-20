@@ -48,7 +48,9 @@ Se git também estiver bloqueado na máquina do usuário (sem git instalado): or
 
 ## Pré-requisito único (setup, uma vez por projeto)
 
-O serviço Railway precisa servir arquivos estáticos a partir de `public/`. Se o repo ainda não tiver isso: copie `references/servidor-estatico/server.js` e `references/servidor-estatico/package.json` para a raiz do repo, commit e push — o Railway detecta Node automaticamente (via `npm start`) e passa a servir `public/[pastaBase]/[slug]/index.html` no caminho correspondente. Sem dependências externas.
+O serviço Railway precisa servir arquivos estáticos a partir de `public/`. Se o repo ainda não tiver isso: copie `references/servidor-estatico/server.js`, `references/servidor-estatico/package.json` **e** `references/servidor-estatico/railway.json` para a raiz do repo, commit e push. O `railway.json` fixa o builder (Nixpacks) e o comando de start (`node server.js`) explicitamente — sem ele o Railway também costuma detectar Node sozinho pelo `package.json`, mas ficar explícito evita builds ambíguos (ex.: se o repo algum dia ganhar outro arquivo de linguagem na raiz) e garante reinício automático (`restartPolicyType: ON_FAILURE`) se o processo cair. Sem dependências externas, sem Dockerfile — Nixpacks builda um servidor Node zero-dependência em segundos.
+
+Se o usuário preferir Dockerfile mesmo assim (controle total do ambiente, paridade com deploy Docker em outro lugar), é possível — mas não é necessário aqui e adiciona manutenção; só ofereça se ele pedir.
 
 ## Teste de conexão do /setup
 
